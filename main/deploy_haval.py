@@ -69,7 +69,7 @@ with tf.Session(config=config) as sess:
         purged_image = np.copy(pred_depth)
         purged_image[pred_error>purge_thresh] = 0
         purged_image = np.squeeze(purged_image)
-        print purged_image.shape
+        print(purged_image.shape)
         pred_depth_image = np.squeeze(pred_depth[0,:,:,0])
         pred_error_image = np.squeeze(pred_error[0,:,:,0])
         pred_depth_image = pred_depth_image.astype(np.uint16)
@@ -82,4 +82,4 @@ with tf.Session(config=config) as sess:
         plt.imsave(arr= purged_image[0,:,:], fname= fname_purged , cmap ='nipy_spectral')
 
         i=i+1
-        print i
+        print(i)

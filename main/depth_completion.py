@@ -12,8 +12,8 @@ import time
 
 def uncertain_loss(predictions, var, labels, weights):
     loss =  (tf.div(tf.square(predictions-labels),2*((var+1e-7)*(var+1e-7))) + (0.5)*tf.math.log((var+1e-7)*(var+1e-7)))*weights
-    print "THIS IS LOSSSS"
-    print loss
+    print("THIS IS LOSSSS")
+    print(loss)
     return loss
 
 # use log(var) as var
@@ -27,14 +27,14 @@ def uncertain_loss(predictions, var, labels, weights):
 
 def squared_loss(predictions, labels, weights):
     loss =  tf.square(predictions-labels)*weights
-    print "THIS IS LOSSSS"
-    print loss
+    print("THIS IS LOSSSS")
+    print(loss)
     return loss
 
 def load_img_to_tensor(dict_type_to_imagepath):
 	dict_res = {}
 	for str_type, str_filepath in dict_type_to_imagepath.items():
-                if str_type == 'labelM':
+		if str_type == 'labelM':
 			try:
 			   kittipath = '/notebooks/dataset'
 			   #kittipath = os.environ['KITTIPATH']
@@ -50,7 +50,7 @@ def load_img_to_tensor(dict_type_to_imagepath):
 				tf_tensor, 352, 1216)
 
 			dict_res[str_type] = tf_tensor
-                else:
+		else:
 			try:
 			    kittipath = '/notebooks/dataset/'
 			    #kittipath = os.environ['KITTIPATH']
@@ -175,13 +175,13 @@ class DepthCompletion(Experiment):
         # If prediction mode, early return
         if mode == tf.estimator.ModeKeys.PREDICT:
             return tf.estimator.EstimatorSpec(mode, predictions=prediction)
-            print prediction
+            print(prediction)
             
         normed_label_mask = (label_mask * norm )
 
         # Define loss and optimizer
         self.parameters.loss_function = tf.losses.mean_squared_error# uncertain_loss#tf.losses.mean_squared_error## #
-        print self.parameters.loss_function
+        print(self.parameters.loss_function)
 
         real_error =  tf.abs( (pred_depth-labels)*label_mask )
 
@@ -266,7 +266,7 @@ class DepthCompletion(Experiment):
         start = time.time()
         predak = model.predict(input_fn=self.input_fn_pred)
         end = time.time()
-        print "ELAPSED TIME FOR ALL: "
+        print("ELAPSED TIME FOR ALL: ")
         print (end-start)
         i=0
         start = time.time()
