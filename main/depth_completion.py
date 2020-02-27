@@ -4,39 +4,40 @@ import os
 import tensorflow as tf
 from experiment import Experiment
 import numpy as np
-import Tkinter 
+import tkinter 
 from PIL import Image
 import matplotlib.pyplot as plt
 import cv2
 import time
 
-def uncertain_loss(predictions, var, labels, weights):
-    loss =  (tf.div(tf.square(predictions-labels),2*((var+1e-7)*(var+1e-7))) + (0.5)*tf.math.log((var+1e-7)*(var+1e-7)))*weights
-    print("THIS IS LOSSSS")
-    print(loss)
-    return loss
+# def uncertain_loss(predictions, var, labels, weights):
+#     loss =  (tf.div(tf.square(predictions-labels),2*((var+1e-7)*(var+1e-7))) + (0.5)*tf.math.log((var+1e-7)*(var+1e-7)))*weights
+#     print("THIS IS LOSSSS")
+#     print(loss)
+#     return loss
 
-# use log(var) as var
-'''
-def uncertain_loss(predictions, var, labels, weights):
-    loss =  (tf.multiply(tf.square(predictions-labels),(0.5)*tf.math.exp(-var+1e-7)) + (0.5)*(var+1e-7))*weights
-    print "THIS IS LOSSSS"
-    print loss
-    return loss
-'''
+# # use log(var) as var
+# '''
+# def uncertain_loss(predictions, var, labels, weights):
+#     loss =  (tf.multiply(tf.square(predictions-labels),(0.5)*tf.math.exp(-var+1e-7)) + (0.5)*(var+1e-7))*weights
+#     print "THIS IS LOSSSS"
+#     print loss
+#     return loss
+# '''
 
-def squared_loss(predictions, labels, weights):
-    loss =  tf.square(predictions-labels)*weights
-    print("THIS IS LOSSSS")
-    print(loss)
-    return loss
+# def squared_loss(predictions, labels, weights):
+#     loss =  tf.square(predictions-labels)*weights
+#     print("THIS IS LOSSSS")
+#     print(loss)
+#     return loss
 
 def load_img_to_tensor(dict_type_to_imagepath):
+
 	dict_res = {}
 	for str_type, str_filepath in dict_type_to_imagepath.items():
 		if str_type == 'labelM':
 			try:
-			   kittipath = '/notebooks/dataset'
+			   kittipath = 'E:/Repositories/data/KITTI'
 			   #kittipath = os.environ['KITTIPATH']
 			   str_filepath = tf.regex_replace(str_filepath, tf.constant(
 				'\$KITTIPATH'), tf.constant(kittipath))
@@ -52,7 +53,7 @@ def load_img_to_tensor(dict_type_to_imagepath):
 			dict_res[str_type] = tf_tensor
 		else:
 			try:
-			    kittipath = '/notebooks/dataset/'
+			    kittipath = 'E:/Repositories/data/KITTI'
 			    #kittipath = os.environ['KITTIPATH']
 			    str_filepath = tf.regex_replace(str_filepath, tf.constant(
 				'\$KITTIPATH'), tf.constant(kittipath))
@@ -211,7 +212,6 @@ class DepthCompletion(Experiment):
         Aloss_reduce2 =  Aloss_reduce2.assign( tf.to_float( tf.abs(new_loss2) ))
   
         loss = loss_depth/Aloss_reduce1 + loss_error/Aloss_reduce2 
-
         if mode == tf.estimator.ModeKeys.TRAIN:
             tf.summary.image("GPU"+str(self.gpu_count)+"/Input/Train/", features)
             tf.summary.image("GPU"+str(self.gpu_count)+"/Ground_truth/Train/", labels)
@@ -221,6 +221,9 @@ class DepthCompletion(Experiment):
             tf.summary.scalar("GPU"+str(self.gpu_count)+"/loss_depth/", loss_depth)
             tf.summary.scalar("GPU"+str(self.gpu_count)+"/loss_error/", loss_error)
             tf.summary.scalar("GPU"+str(self.gpu_count)+"/loss_depth+loss_error/", loss_depth+loss_error)
+
+            # train_writer = tf.summary.FileWriter('./../logs')
+            # tf.summary.merge_all()
 
         if mode == tf.estimator.ModeKeys.EVAL:
             tf.summary.image("GPU"+str(self.gpu_count)+"/Input/Val/", features)
@@ -272,8 +275,8 @@ class DepthCompletion(Experiment):
         start = time.time()
         for p in predak:
 
-             fname= os.path.join('/notebooks/project/results_haval','{:0>10d}.png'.format(i))
-             fname_c= os.path.join('/notebooks/project/results_haval11','{:0>10d}.png'.format(i))
+             fname= os.path.join('../results_haval','{:0>10d}.png'.format(i))
+             fname_c= os.path.join('../results_haval11','{:0>10d}.png'.format(i))
              temp = plt.imsave(arr= np.squeeze(p), fname= fname_c , cmap ='nipy_spectral')#'nipy_spectral' )
              image = np.rint(np.squeeze(p))
              image[image<900.0] = 900.0

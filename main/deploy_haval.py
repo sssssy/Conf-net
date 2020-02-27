@@ -1,3 +1,4 @@
+import pandas as pd
 import tensorflow as tf
 import os
 import numpy as np
@@ -10,20 +11,20 @@ purge_thresh = 351 # in millimeter
 # convert thresh between 0-65535
 purge_thresh = (purge_thresh*256)/1000
 
-out_pathes = ['/notebooks/project/predictions/error',
-              '/notebooks/project/predictions/error_vis',
-              '/notebooks/project/predictions/error_vis_log',
-              '/notebooks/project/predictions/depth',
-              '/notebooks/project/predictions/depth_vis',
-              '/notebooks/project/predictions/purged'] 
+out_pathes = ['../predictions/error',
+              '../predictions/error_vis',
+              '../predictions/error_vis_log',
+              '../predictions/depth',
+              '../predictions/depth_vis',
+              '../predictions/purged'] 
 
 
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 height, width, channels = 352, 1216, 1
-raw_dir = '/notebooks/project/sample_lidar_scans'
-X_f = sorted(os.listdir(raw_dir))
+raw_dir = '/../sample_lidar_scans'
+X_f = sorted(os.listdir( os.path.join( os.path.dirname(__file__) + raw_dir ) ) )
 
-model_path = "/notebooks/project/trained_model"
+model_path = "../trained_model"
 saver = tf.train.import_meta_graph(os.path.join(model_path,'model.ckpt-52909.meta'),clear_devices=True)
 
 config=tf.ConfigProto(log_device_placement=False)
@@ -57,12 +58,12 @@ with tf.Session(config=config) as sess:
           if not os.path.exists(path):
             os.makedirs(path)
 
-        fname_v= os.path.join('/notebooks/project/predictions/error',image_num)
-        fname= os.path.join('/notebooks/project/predictions/depth',image_num)
-        fname_v_vis= os.path.join('/notebooks/project/predictions/error_vis',image_num)
-        fname_v_vis_log= os.path.join('/notebooks/project/predictions/error_vis_log',image_num)
-        fname_vis= os.path.join('/notebooks/project/predictions/depth_vis',image_num)
-        fname_purged= os.path.join('/notebooks/project/predictions/purged',image_num)
+        fname_v= os.path.join('../predictions/error',image_num)
+        fname= os.path.join('../predictions/depth',image_num)
+        fname_v_vis= os.path.join('../predictions/error_vis',image_num)
+        fname_v_vis_log= os.path.join('../predictions/error_vis_log',image_num)
+        fname_vis= os.path.join('../predictions/depth_vis',image_num)
+        fname_purged= os.path.join('/../predictions/purged',image_num)
 
 
 

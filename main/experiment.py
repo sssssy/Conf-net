@@ -34,7 +34,7 @@ class Parameters():
 
         self.max_epochs=16
         self.steps_per_epoch = 85896
-        self.steps_per_epoch = self.steps_per_epoch / \
+        self.steps_per_epoch = self.steps_per_epoch // \
             self.batch_size
         self.num_steps = self.steps_per_epoch * self.max_epochs
         self.log_dir='./../logs'
