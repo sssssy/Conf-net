@@ -37,7 +37,7 @@ class Parameters():
         self.steps_per_epoch = self.steps_per_epoch // \
             self.batch_size
         self.num_steps = self.steps_per_epoch * self.max_epochs
-        self.log_dir='./../logs'
+        self.log_dir='E:/Repositories/tensorflow-conf_net-source/logs'
 
         self.shuffle = True
         self.prefetch_buffer_size = 4
